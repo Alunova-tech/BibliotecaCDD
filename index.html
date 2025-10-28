@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDD Informacion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 280px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            color: #2c5aa0;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .audio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            background: white;
+            padding: 20px;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .audio-card {
+            border-radius: 25px;
+            padding: 25px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .audio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .audio-card.intro {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .audio-card.derechos {
+            background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
+        }
+
+        .audio-card.autonomia {
+            background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
+        }
+
+        .audio-card.justicia {
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+        }
+
+        .audio-card.reflexion {
+            background: linear-gradient(135deg, #fee140 0%, #fa709a 100%);
+            grid-column: span 2;
+        }
+
+        .audio-info {
+            color: white;
+        }
+
+        .audio-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .audio-duration {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .play-button {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            margin-top: 15px;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        .play-button:active {
+            transform: scale(0.95);
+        }
+
+        .play-icon, .pause-icon {
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .play-icon {
+            border-width: 10px 0 10px 16px;
+            border-color: transparent transparent transparent #667eea;
+            margin-left: 3px;
+        }
+
+        .pause-icon {
+            width: 16px;
+            height: 20px;
+            position: relative;
+        }
+
+        .pause-icon::before,
+        .pause-icon::after {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 20px;
+            background: #667eea;
+        }
+
+        .pause-icon::before {
+            left: 0;
+        }
+
+        .pause-icon::after {
+            right: 0;
+        }
+
+        .loading {
+            opacity: 0.6;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
+            .audio-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .audio-card {
+                padding: 15px;
+                min-height: 160px;
+            }
+
+            .audio-title {
+                font-size: 15px;
+            }
+
+            .audio-duration {
+                font-size: 12px;
+            }
+
+            .play-button {
+                width: 40px;
+                height: 40px;
+                margin-top: 10px;
+            }
+
+            .play-icon {
+                border-width: 8px 0 8px 13px;
+            }
+
+            .pause-icon {
+                width: 13px;
+                height: 16px;
+            }
+
+            .pause-icon::before,
+            .pause-icon::after {
+                width: 4px;
+                height: 16px;
+            }
+
+            .audio-card.reflexion {
+                grid-column: span 2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="assets/logo.png" alt="CDD Logo" class="logo">
+            <h2>Biblioteca de Audio</h2>
+            <p>Toca una tarjeta para reproducir</p>
+        </div>
+        
+        <div class="audio-grid">
+            <div class="audio-card intro" data-audio="src/audios/Introduccion.mp3">
+                <div class="audio-info">
+                    <div class="audio-title">Introducción</div>
+                    <div class="audio-duration" data-duration>Cargando...</div>
+                </div>
+                <button class="play-button">
+                    <div class="play-icon"></div>
+                </button>
+            </div>
+
+            <div class="audio-card derechos" data-audio="src/audios/Derechos Reproductivos.mp3">
+                <div class="audio-info">
+                    <div class="audio-title">Derechos Reproductivos</div>
+                    <div class="audio-duration" data-duration>Cargando...</div>
+                </div>
+                <button class="play-button">
+                    <div class="play-icon"></div>
+                </button>
+            </div>
+
+            <div class="audio-card autonomia" data-audio="src/audios/Autonomía Corporal.mp3">
+                <div class="audio-info">
+                    <div class="audio-title">Autonomía Corporal</div>
+                    <div class="audio-duration" data-duration>Cargando...</div>
+                </div>
+                <button class="play-button">
+                    <div class="play-icon"></div>
+                </button>
+            </div>
+
+            <div class="audio-card justicia" data-audio="src/audios/Justicia Social.mp3">
+                <div class="audio-info">
+                    <div class="audio-title">Justicia Social</div>
+                    <div class="audio-duration" data-duration>Cargando...</div>
+                </div>
+                <button class="play-button">
+                    <div class="play-icon"></div>
+                </button>
+            </div>
+
+            <div class="audio-card reflexion" data-audio="src/audios/Reflexión Final.mp3">
+                <div class="audio-info">
+                    <div class="audio-title">Reflexión Final</div>
+                    <div class="audio-duration" data-duration>Cargando...</div>
+                </div>
+                <button class="play-button">
+                    <div class="play-icon"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class AudioLibrary {
+            constructor() {
+                this.currentAudio = null;
+                this.currentCard = null;
+                this.audioElements = new Map();
+                this.init();
+            }
+
+            init() {
+                const cards = document.querySelectorAll('.audio-card');
+                
+                cards.forEach(card => {
+                    const audioSrc = card.dataset.audio;
+                    const audio = new Audio(audioSrc);
+                    
+                    this.audioElements.set(card, audio);
+                    
+                    audio.addEventListener('loadedmetadata', () => {
+                        const duration = this.formatTime(audio.duration);
+                        card.querySelector('[data-duration]').textContent = duration;
+                    });
+
+                    audio.addEventListener('ended', () => {
+                        this.resetCard(card);
+                    });
+
+                    audio.addEventListener('error', () => {
+                        card.querySelector('[data-duration]').textContent = 'Error al cargar';
+                    });
+
+                    card.addEventListener('click', (e) => {
+                        if (!e.target.closest('.play-button')) {
+                            card.querySelector('.play-button').click();
+                        }
+                    });
+
+                    const button = card.querySelector('.play-button');
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.togglePlay(card);
+                    });
+                });
+            }
+
+            formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            togglePlay(card) {
+                const audio = this.audioElements.get(card);
+                const button = card.querySelector('.play-button');
+
+                if (this.currentAudio && this.currentAudio !== audio) {
+                    this.currentAudio.pause();
+                    this.currentAudio.currentTime = 0;
+                    this.resetCard(this.currentCard);
+                }
+
+                if (audio.paused) {
+                    audio.play();
+                    this.currentAudio = audio;
+                    this.currentCard = card;
+                    this.updateButtonToPause(button);
+                } else {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    this.resetCard(card);
+                }
+            }
+
+            updateButtonToPause(button) {
+                button.innerHTML = '<div class="pause-icon"></div>';
+            }
+
+            updateButtonToPlay(button) {
+                button.innerHTML = '<div class="play-icon"></div>';
+            }
+
+            resetCard(card) {
+                const button = card.querySelector('.play-button');
+                this.updateButtonToPlay(button);
+                
+                if (this.currentCard === card) {
+                    this.currentAudio = null;
+                    this.currentCard = null;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new AudioLibrary();
+        });
+    </script>
+</body>
+</html>
