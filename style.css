@@ -167,7 +167,7 @@ body {
     box-shadow: 0 8px 26px rgba(0,0,0,0.12);
     overflow:hidden;
 
-    /* Cuando JS ponga background-image, que cubra correctamente */
+    /* 123Cuando JS ponga background-image, que cubra correctamente */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
