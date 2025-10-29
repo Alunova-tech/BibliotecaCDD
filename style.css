@@ -21,7 +21,7 @@ body {
     text-align:center;
     margin-bottom: 12px;
 }
-.logo { max-width:120px; height:auto; margin-bottom:10px; }
+.logo { max-width:250px; height:auto; margin-bottom:10px; }
 .header h2 { color:#2c5aa0; font-size:20px; margin-bottom:6px; }
 .header p { color:#666; font-size:13px; }
 
