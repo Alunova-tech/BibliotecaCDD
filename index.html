@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>CDD Información</title>
 
-    <!-- Estilos -->
+    <!-- Enlaza CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
     <div class="container">
         <!-- Encabezado -->
@@ -19,48 +17,71 @@
             <p>Toca una tarjeta para reproducir</p>
         </div>
 
-        <!-- Tarjetas de audio -->
+        <!-- Tarjetas de audio (fondo exclusivo en audio-grid) -->
         <div class="audio-grid">
-            <div class="audio-card intro" data-audio="src/audios/madre.mp3">
+            <!-- Imagen decorativa de fondo dentro del grid (no interactiva) -->
+            <img class="grid-decor" src="assets/Personajes/RELATO 1 (MADRE) (1).png" alt="" aria-hidden="true" loading="lazy">
+            <div class="audio-card intro" data-audio="src/audios/madre.mp3" data-artwork="assets/Personajes/RELATO 1 (MADRE) (1).png">
+                <img class="card-image" src="assets/Personajes/RELATO 1 (MADRE) (1).png" alt="Relato Madre" loading="lazy">
                 <div class="audio-info">
                     <div class="audio-title">Relato Madre</div>
-                    <div class="audio-duration" data-duration>Cargando...</div>
                 </div>
             </div>
 
-            <div class="audio-card derechos" data-audio="src/audios/Derechos Reproductivos.mp3">
+            <div class="audio-card derechos" data-audio="src/audios/CATOLICAS - RELATO 2 (DOCTORA) (2).mp3" data-artwork="assets/Personajes/RELATO 2 (DOCTORA) (2).png">
+                <img class="card-image" src="assets/Personajes/RELATO 2 (DOCTORA) (2).png" alt="Derechos Reproductivos" loading="lazy">
                 <div class="audio-info">
                     <div class="audio-title">Derechos Reproductivos</div>
-                    <div class="audio-duration" data-duration>Cargando...</div>
                 </div>
             </div>
 
-            <div class="audio-card autonomia" data-audio="src/audios/Autonomía Corporal.mp3">
+            <div class="audio-card autonomia" data-audio="src/audios/CATOLICAS - RELATO 3 (CURA) (1).mp3" data-artwork="assets/Personajes/RELATO 3 (CURA) (1).png">
+                <img class="card-image" src="assets/Personajes/RELATO 3 (CURA) (1).png" alt="Autonomía Corporal" loading="lazy">
                 <div class="audio-info">
                     <div class="audio-title">Autonomía Corporal</div>
-                    <div class="audio-duration" data-duration>Cargando...</div>
+
                 </div>
             </div>
 
-            <div class="audio-card justicia" data-audio="src/audios/Justicia Social.mp3">
+            <div class="audio-card justicia" data-audio="src/audios/CATOLICAS - RELATO 4 (AMIGA) (2).mp3" data-artwork="assets/Personajes/RELATO 4 (AMIGA) (2).png">
+                <img class="card-image" src="assets/Personajes/RELATO 4 (AMIGA) (2).png" alt="Justicia Social" loading="lazy">
                 <div class="audio-info">
                     <div class="audio-title">Justicia Social</div>
-                    <div class="audio-duration" data-duration>Cargando...</div>
+
                 </div>
             </div>
 
-            <div class="audio-card reflexion" data-audio="src/audios/Reflexión Final.mp3">
+            <div class="audio-card reflexion" data-audio="src/audios/madre.mp3" data-artwork="assets/Personajes/RELATO 1 (MADRE) (1).png">
+                <img class="card-image" src="assets/Personajes/RELATO 1 (MADRE) (1).png" alt="Reflexión Final" loading="lazy">
                 <div class="audio-info">
                     <div class="audio-title">Reflexión Final</div>
-                    <div class="audio-duration" data-duration>Cargando...</div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- Script principal -->
+    <!-- Modal para vista ampliada -->
+    <div class="audio-modal" id="audioModal" aria-hidden="true">
+        <div class="audio-modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button class="close-btn" aria-label="Cerrar">&times;</button>
+
+            <div class="modal-card">
+                <div class="modal-artwork" id="modalArtwork">
+                    <!-- Si quieres poner una imagen grande, se puede setear por CSS o JS -->
+                </div>
+
+                <h3 id="modalTitle">Título</h3>
+                <p id="modalDuration">0:00</p>
+
+                <!-- Visualizador animado (decorativo por defecto) -->
+                <div id="visualizer" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enlaza JS -->
     <script src="script.js"></script>
 </body>
-
 </html>

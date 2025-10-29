@@ -1,240 +1,192 @@
-/* --- Reset global --- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* --- Estilo base --- */
+/* Reset / base */
+* { box-sizing: border-box; margin:0; padding:0; }
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+
     min-height: 100vh;
     padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-/* --- Contenedor principal --- */
-.container {
-    max-width: 600px;
-    width: 100%;
-    overflow: hidden;
-}
+/* Contenedor */
+.container { max-width: 600px; width:100%; overflow:hidden; }
 
-/* --- Encabezado --- */
+/* Header */
 .header {
-    background: white;
-    border-radius: 20px 20px 0 0;
-    padding: 30px;
-    text-align: center;
+    background:white;
+    border-radius:20px 20px 0 0;
+    padding:20px;
+    text-align:center;
+    margin-bottom: 12px;
 }
+.logo { max-width:120px; height:auto; margin-bottom:10px; }
+.header h2 { color:#2c5aa0; font-size:20px; margin-bottom:6px; }
+.header p { color:#666; font-size:13px; }
 
-.logo {
-    max-width: 280px;
-    height: auto;
-    margin-bottom: 20px;
-}
-
-.header h2 {
-    color: #2c5aa0;
-    font-size: 24px;
-    margin-bottom: 5px;
-}
-
-.header p {
-    color: #666;
-    font-size: 14px;
-}
-
-/* --- Grid de audios --- */
+/* === AUDIO GRID con fondo exclusivo === */
 .audio-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    background: white;
+    /* Imagen exclusiva para audio-grid (ajusta ruta) */
+    background: white; /* Background ahora manejado por elemento .grid-decor dentro del grid */
     padding: 20px;
+    border-radius: 0 0 20px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Imagen decorativa absoluta dentro de .audio-grid (detrás de las tarjetas) */
+.audio-grid .grid-decor {
+    position: absolute;
+    inset: 0; /* top:0; right:0; bottom:0; left:0; */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.12; /* baja opacidad para no competir con colores de tarjetas */
+    pointer-events: none; /* no interfiere con clicks en las tarjetas */
+    z-index: 0;
     border-radius: 0 0 20px 20px;
 }
 
-/* --- Tarjetas de audio --- */
+/* Asegurar que las tarjetas estén por encima de la imagen decorativa */
+.audio-grid > .audio-card { z-index: 1; position: relative; }
+
+/* Tarjetas (NO tocamos la estructura de las tarjetas) */
 .audio-card {
-    border-radius: 25px;
-    padding: 25px;
+    border-radius: 20px;
+    padding: 16px;
+    background: rgba(255,255,255,0.95); /* ligero fondo para contraste con la imagen */
+    min-height: 160px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    color: #fff;
     position: relative;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    min-height: 180px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
+    overflow: hidden;
+    transition: transform 300ms cubic-bezier(.25,.1,.25,1), box-shadow 300ms;
 }
 
-.audio-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
+/* Dependiendo del color, preservamos las clases de color que tenías.
+   Si tus tarjetas ya tienen background-gradients via clases (ej .intro), mantenlas. */
+.audio-card.intro { background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); }
+.audio-card.derechos { background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%); }
+.audio-card.autonomia { background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%); }
+.audio-card.justicia { background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); }
+.audio-card.reflexion { background: linear-gradient(135deg, #fee140 0%, #fa709a 100%); grid-column: span 2; }
 
-/* --- Colores por tema --- */
-.audio-card.intro {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-}
+/* Info dentro de la tarjeta */
+.audio-info { color: white; }
+.audio-title { font-size: 16px; font-weight:600; line-height:1.1; margin-bottom:6px; color: #fff;}
+.audio-duration { font-size:13px; opacity:0.95; color: #fff; }
 
-.audio-card.derechos {
-    background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
-}
-
-.audio-card.autonomia {
-    background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
-}
-
-.audio-card.justicia {
-    background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
-}
-
-.audio-card.reflexion {
-    background: linear-gradient(135deg, #fee140 0%, #fa709a 100%);
-    grid-column: span 2;
-}
-
-/* --- Texto e información --- */
-.audio-info {
-    color: white;
-}
-
-.audio-title {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    line-height: 1.3;
-}
-
-.audio-duration {
-    font-size: 14px;
-    opacity: 0.9;
-}
-
-/* --- Imágenes dentro de las tarjetas --- */
-.audio-card .card-image {
+/* Imagen dentro de cada tarjeta */
+.card-image {
     width: 100%;
     height: 110px;
     object-fit: cover;
-    border-radius: 15px;
+    border-radius: 12px;
     display: block;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
-/* Ajuste para la tarjeta que ocupa dos columnas */
-.audio-card.reflexion .card-image {
-    height: 140px;
+/* Hover sutil (NO altera otras tarjetas) */
+.audio-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
 }
 
-/* --- Botón de reproducción --- */
-.play-button {
-    width: 50px;
-    height: 50px;
-    background: white;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    display: flex;
+/* ================= MODAL ================= */
+.audio-modal {
+    display: none; /* toggled por JS */
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.65);
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s ease;
-    margin-top: 15px;
 }
 
-.play-button:hover {
-    transform: scale(1.1);
-}
+.audio-modal[aria-hidden="false"] { display:flex; }
 
-.play-button:active {
-    transform: scale(0.95);
-}
-
-/* --- Iconos de play / pausa --- */
-.play-icon,
-.pause-icon {
-    width: 0;
-    height: 0;
-    border-style: solid;
-}
-
-.play-icon {
-    border-width: 10px 0 10px 16px;
-    border-color: transparent transparent transparent #667eea;
-    margin-left: 3px;
-}
-
-.pause-icon {
-    width: 16px;
-    height: 20px;
+.audio-modal-content {
+    width: 92%;
+    max-width: 420px;
+    border-radius: 18px;
+    background: linear-gradient(180deg,#ffffff,#f7f9ff);
+    padding: 22px;
     position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    animation: modalIn 300ms cubic-bezier(.25,.1,.25,1);
 }
 
-.pause-icon::before,
-.pause-icon::after {
-    content: '';
+@keyframes modalIn {
+    from { transform: scale(.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-btn {
     position: absolute;
-    width: 5px;
-    height: 20px;
-    background: #667eea;
+    right: 14px;
+    top: 10px;
+    font-size: 26px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
 }
 
-.pause-icon::before { left: 0; }
-.pause-icon::after { right: 0; }
+/* Modal card content */
+.modal-card { text-align:center; padding-top:6px; }
+#modalTitle { font-size:18px; color:#2c5aa0; margin:10px 0 6px; }
+#modalDuration { color:#666; font-size:14px; margin-bottom:12px; }
 
-.loading {
-    opacity: 0.6;
+/* Artwork (opcional) */
+.modal-artwork {
+    width:180px;
+    height:180px;
+    margin:0 auto;
+    background: linear-gradient(180deg,#e6eefc,#ffffff);
+    border-radius:14px;
+    box-shadow: 0 8px 26px rgba(0,0,0,0.12);
+    overflow:hidden;
+
+    /* Cuando JS ponga background-image, que cubra correctamente */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-/* --- Responsividad --- */
-@media (max-width: 600px) {
-    body { padding: 10px; }
+/* Visualizador decorativo */
+#visualizer {
+    margin: 18px auto 0;
+    width: 220px;
+    height: 60px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    gap:6px;
+}
+#visualizer span {
+    width:8px;
+    background: linear-gradient(180deg,#ff5e7e,#9b5eff);
+    border-radius:4px;
+    height:15px;
+    animation: bounce 1000ms infinite ease-in-out;
+}
+#visualizer span:nth-child(2) { animation-delay: 100ms; }
+#visualizer span:nth-child(3) { animation-delay: 200ms; }
+#visualizer span:nth-child(4) { animation-delay: 300ms; }
+#visualizer span:nth-child(5) { animation-delay: 400ms; }
+@keyframes bounce {
+    0%,100% { height: 15px; }
+    50% { height: 60px; }
+}
 
-    .container { max-width: 100%; }
-
-    .header { padding: 20px 15px; }
-
-    .audio-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        padding: 15px;
-    }
-
-    .audio-card {
-        padding: 15px;
-        min-height: 160px;
-    }
-
-    .audio-title { font-size: 15px; }
-    .audio-duration { font-size: 12px; }
-
-    .play-button {
-        width: 40px;
-        height: 40px;
-        margin-top: 10px;
-    }
-
-    .play-icon {
-        border-width: 8px 0 8px 13px;
-    }
-
-    .pause-icon {
-        width: 13px;
-        height: 16px;
-    }
-
-    .pause-icon::before,
-    .pause-icon::after {
-        width: 4px;
-        height: 16px;
-    }
-
-    .audio-card.reflexion {
-        grid-column: span 2;
-    }
+/* Responsive */
+@media (max-width:600px) {
+    .audio-grid { grid-template-columns: repeat(2,1fr); padding:14px; gap:10px; }
+    .audio-card { min-height:140px; padding:12px; border-radius:14px; }
+    .modal-artwork { width:140px; height:140px; }
 }
