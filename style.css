@@ -10,8 +10,23 @@ body {
     align-items:center;
 }
 
+:root {
+    --max-width: 1400px;
+    --bg: #ffffff;
+    --card-bg: rgba(255,255,255,0.95);
+    --card-fg: #ffffff;
+    --accent: #2c5aa0;
+    --muted: #666666;
+    --grid-gap: 16px;
+    --card-radius: 20px;
+    --card-padding: 16px;
+    --card-image-height: clamp(110px, 18vw, 200px);
+    --modal-artwork-size: clamp(140px, 20vw, 320px);
+    --card-shadow: 0 12px 30px rgba(0,0,0,0.18);
+}
+
 /* Contenedor */
-.container { max-width: 600px; width:100%; overflow:hidden; }
+.container { max-width: min(var(--max-width), 95vw); width:100%; overflow:hidden; }
 
 /* Header */
 .header {
@@ -21,19 +36,19 @@ body {
     text-align:center;
     margin-bottom: 12px;
 }
-.logo { max-width:250px; height:auto; margin-bottom:10px; }
-.header h2 { color:#2c5aa0; font-size:20px; margin-bottom:6px; }
-.header p { color:#666; font-size:13px; }
+.logo { width: clamp(320px, 12vw, 640px); height: auto; margin-bottom:18px; }
+.header h2 { color: var(--accent); font-size:20px; margin-bottom:6px; }
+.header p { color: var(--muted); font-size:13px; }
 
 /* === AUDIO GRID con fondo exclusivo === */
 .audio-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--grid-gap);
     /* Imagen exclusiva para audio-grid (ajusta ruta) */
-    background: white; /* Background ahora manejado por elemento .grid-decor dentro del grid */
-    padding: 20px;
-    border-radius: 0 0 20px 20px;
+    background: var(--bg); /* Background ahora manejado por elemento .grid-decor dentro del grid */
+    padding: var(--card-padding);
+    border-radius: 0 0 var(--card-radius) var(--card-radius);
     position: relative;
     z-index: 1;
 }
@@ -56,14 +71,14 @@ body {
 
 /* Tarjetas (NO tocamos la estructura de las tarjetas) */
 .audio-card {
-    border-radius: 20px;
-    padding: 16px;
-    background: rgba(255,255,255,0.95); /* ligero fondo para contraste con la imagen */
+    border-radius: var(--card-radius);
+    padding: var(--card-padding);
+    background: var(--card-bg); /* ligero fondo para contraste con la imagen */
     min-height: 160px;
     display:flex;
     flex-direction:column;
     justify-content:flex-end;
-    color: #fff;
+    color: var(--card-fg);
     position: relative;
     overflow: hidden;
     transition: transform 300ms cubic-bezier(.25,.1,.25,1), box-shadow 300ms;
@@ -78,14 +93,14 @@ body {
 .audio-card.reflexion { background: linear-gradient(135deg, #fee140 0%, #fa709a 100%); grid-column: span 2; }
 
 /* Info dentro de la tarjeta */
-.audio-info { color: white; }
-.audio-title { font-size: 16px; font-weight:600; line-height:1.1; margin-bottom:6px; color: #fff;}
-.audio-duration { font-size:13px; opacity:0.95; color: #fff; }
+.audio-info { color: var(--card-fg); }
+.audio-title { font-size: 16px; font-weight:600; line-height:1.1; margin-bottom:6px; color: var(--card-fg);}
+.audio-duration { font-size:13px; opacity:0.95; color: var(--card-fg); }
 
 /* Imagen dentro de cada tarjeta */
 .card-image {
     width: 100%;
-    height: 110px;
+    height: var(--card-image-height);
     object-fit: cover;
     border-radius: 12px;
     display: block;
@@ -95,7 +110,7 @@ body {
 /* Hover sutil (NO altera otras tarjetas) */
 .audio-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+    box-shadow: var(--card-shadow);
 }
 
 /* ================= MODAL ================= */
@@ -144,10 +159,10 @@ body {
 
 /* Artwork (opcional) */
 .modal-artwork {
-    width:180px;
-    height:180px;
+    width: var(--modal-artwork-size);
+    height: var(--modal-artwork-size);
     margin:0 auto;
-    background: linear-gradient(180deg,#e6eefc,#ffffff);
+    background: linear-gradient(180deg,#e6eefc,var(--bg));
     border-radius:14px;
     box-shadow: 0 8px 26px rgba(0,0,0,0.12);
     overflow:hidden;
