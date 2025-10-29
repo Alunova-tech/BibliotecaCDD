@@ -65,13 +65,6 @@ class AudioLibrary {
         window.addEventListener('click', (e) => {
             if (e.target === this.modal) this.closeModal();
         });
-
-        // Tecla ESC para cerrar
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modal.getAttribute('aria-hidden') === 'false') {
-                this.closeModal();
-            }
-        });
     }
 
     formatTime(seconds) {
@@ -158,18 +151,6 @@ class AudioLibrary {
         };
     }
 
-    // Fallback: si play() fue bloqueado, al tocar el modal intentamos reproducir de nuevo
-    _clickToPlayFallback = (e) => {
-        if (!this.currentAudio) return;
-        const audio = this.currentAudio;
-        audio.play().then(() => {
-            // si funcionó, quitamos el listener
-            this.modal.removeEventListener('click', this._clickToPlayFallback);
-            this.modalDuration.textContent = this.formatTime(audio.duration || 0);
-        }).catch(err => {
-            console.warn('AudioLibrary: aún no se puede reproducir', err);
-        });
-    }
 
     closeModal() {
         // Pausar audio si hay uno
