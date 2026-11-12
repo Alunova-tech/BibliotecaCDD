@@ -2,48 +2,62 @@
 * { box-sizing: border-box; margin:0; padding:0; }
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
-    min-height: 100vh;
-    padding: 20px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    min-height: var(--viewport-height);
+    background: #edf0f6;
 }
 
 :root {
-    --max-width: 1400px;
+    --viewport-height: 100vh;
+    --stage-width: min(100vw, max(16rem, calc(var(--viewport-height) * 9 / 16)));
     --bg: #ffffff;
     --card-bg: rgba(255,255,255,0.95);
     --card-fg: #ffffff;
     --accent: #2c5aa0;
     --muted: #666666;
-    --grid-gap: 16px;
+    --grid-gap: clamp(8px, 2.6cqw, 24px);
     --card-radius: 20px;
-    --card-padding: 16px;
-    --card-image-height: clamp(110px, 18vw, 200px);
-    --modal-artwork-size: clamp(140px, 20vw, 320px);
+    --card-padding: clamp(8px, 2.6cqw, 22px);
+    --card-image-height: clamp(68px, 24cqw, 320px);
     --card-shadow: 0 12px 30px rgba(0,0,0,0.18);
 }
 
+@supports (height: 100dvh) {
+    :root { --viewport-height: 100dvh; }
+}
+
 /* Contenedor */
-.container { max-width: min(var(--max-width), 95vw); width:100%; overflow:hidden; }
+.container {
+    width: var(--stage-width);
+    min-height: max(var(--viewport-height), calc(var(--stage-width) * 16 / 9));
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    container-type: inline-size;
+    background: var(--bg);
+}
 
 /* Header */
 .header {
     background:white;
     border-radius:20px 20px 0 0;
-    padding:20px;
+    padding: clamp(10px, 2.8cqw, 30px);
     text-align:center;
+    margin-bottom: 8px;
+}
+.logo {
+    width: clamp(104px, 38cqw, 360px);
+    max-width: 100%;
+    height: auto;
     margin-bottom: 12px;
 }
-.logo { width: clamp(320px, 12vw, 640px); height: auto; margin-bottom:18px; }
-.header h2 { color: var(--accent); font-size:20px; margin-bottom:6px; }
-.header p { color: var(--muted); font-size:13px; }
+.header h2 { color: var(--accent); font-size: clamp(20px, 4.8cqw, 44px); margin-bottom: 6px; }
+.header p { color: var(--muted); font-size: clamp(13px, 2.7cqw, 24px); }
 
 /* === AUDIO GRID con fondo exclusivo === */
 .audio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--grid-gap);
     /* Imagen exclusiva para audio-grid (ajusta ruta) */
     background: var(--bg); /* Background ahora manejado por elemento .grid-decor dentro del grid */
@@ -74,7 +88,7 @@ body {
     border-radius: var(--card-radius);
     padding: var(--card-padding);
     background: var(--card-bg); /* ligero fondo para contraste con la imagen */
-    min-height: 160px;
+    min-width: 0;
     display:flex;
     flex-direction:column;
     justify-content:flex-end;
@@ -90,18 +104,18 @@ body {
 .audio-card.derechos { background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%); }
 .audio-card.autonomia { background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%); }
 .audio-card.justicia { background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%); }
-.audio-card.reflexion { background: linear-gradient(135deg, #fee140 0%, #fa709a 100%); grid-column: span 2; }
+.audio-card.reflexion { background: linear-gradient(135deg, #fee140 0%, #fa709a 100%); grid-column: 1 / -1; }
 
 /* Info dentro de la tarjeta */
 .audio-info { color: var(--card-fg); }
-.audio-title { font-size: 16px; font-weight:600; line-height:1.1; margin-bottom:6px; color: var(--card-fg);}
+.audio-title { font-size: clamp(14px, 3.2cqw, 28px); font-weight:600; line-height:1.2; margin-bottom:6px; color: var(--card-fg); }
 .audio-duration { font-size:13px; opacity:0.95; color: var(--card-fg); }
 
 /* Imagen dentro de cada tarjeta */
 .card-image {
     width: 100%;
     height: var(--card-image-height);
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 12px;
     display: block;
     margin-bottom: 10px;
@@ -127,8 +141,9 @@ body {
 .audio-modal[aria-hidden="false"] { display:flex; }
 
 .audio-modal-content {
-    width: 92%;
-    max-width: 420px;
+    width: min(calc(var(--stage-width) - 24px), 420px);
+    max-height: calc(var(--viewport-height) - 24px);
+    overflow: auto;
     border-radius: 18px;
     background: linear-gradient(180deg,#ffffff,#f7f9ff);
     padding: 22px;
@@ -159,8 +174,8 @@ body {
 
 /* Artwork (opcional) */
 .modal-artwork {
-    width: var(--modal-artwork-size);
-    height: var(--modal-artwork-size);
+    width: min(100%, 320px, max(90px, calc(var(--viewport-height) - 178px)));
+    aspect-ratio: 1;
     margin:0 auto;
     background: linear-gradient(180deg,#e6eefc,var(--bg));
     border-radius:14px;
@@ -177,6 +192,7 @@ body {
 #visualizer {
     margin: 18px auto 0;
     width: 220px;
+    max-width: 100%;
     height: 60px;
     display:flex;
     align-items:flex-end;
@@ -197,11 +213,4 @@ body {
 @keyframes bounce {
     0%,100% { height: 15px; }
     50% { height: 60px; }
-}
-
-/* Responsive */
-@media (max-width:600px) {
-    .audio-grid { grid-template-columns: repeat(2,1fr); padding:14px; gap:10px; }
-    .audio-card { min-height:140px; padding:12px; border-radius:14px; }
-    .modal-artwork { width:140px; height:140px; }
 }
